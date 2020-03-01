@@ -1,5 +1,5 @@
 // A template for the Graph Concepts Exercise in C++.
-
+// Including all the required libraries and files
 #include <iostream>
 using namespace std;
 #include "digraph.h"
@@ -7,7 +7,8 @@ using namespace std;
 #include <fstream>
 #include <string>
 
-
+// Declaring all the digraph class functions
+// All digraph functions were taken from digraph.cpp file
 void Digraph::addVertex(int v) {
   // If it already exists, does nothing.
   // Otherwise, adds v with an empty adjacency set.
@@ -77,8 +78,8 @@ bool Digraph::isPath(vector<int> path) {
   return isWalk(path);
 }
 
-
-
+// Implementation of breadth first search
+// Implementation from breathFirstSearch.cpp file
 unordered_map<int, int> breadthFirstSearch(const Digraph& graph, int startVertex) {
   unordered_map<int, int> searchTree; // map each vertex to its predecessor
 
@@ -102,20 +103,25 @@ unordered_map<int, int> breadthFirstSearch(const Digraph& graph, int startVertex
   return searchTree;
 }
 
-
+// required function to implement which determines the number of connected components
 int count_components(Digraph* g) {
+	// Vector of all the present vertices
 	vector<int> allVertices = g->vertices();
+
+	// Initializing an empty unordered set to store the connected components
 	unordered_set<int> allVerticesSet;
 
+	// elementCounter keeps track of the index of vertex
+	// counter keeps track of the number of seperate trees
 	int elementCounter = 0;
 	int counter = 0;
 	
 	while (allVertices.size() > allVerticesSet.size()){
-		
+		// the if statement checks weather the the given vertex is already in the unordered set
 		if (allVerticesSet.find(allVertices[elementCounter]) == allVerticesSet.end()){
 			unordered_map<int, int> searchTree = breadthFirstSearch(*g, allVertices[elementCounter]);
 			unordered_map<int, int>::iterator it = searchTree.begin();
-
+			// inserts all the connected vertices if they are not present
 			while (it != searchTree.end()) {
 				allVerticesSet.insert(it->first);
 				it++;
@@ -127,23 +133,29 @@ int count_components(Digraph* g) {
     return counter;
 }
 
-
+// required function to implement takes file as input and finds the connected components
 Digraph* read_city_graph_undirected(char filename[]) {
+	// initializing an empty instance of Digraph class which stores all the vertices and edges
 	Digraph edmontonGraph;
 	int k;
 	int l;
 	int m;
 
+	// following block opens the file and starts to read the content
 	ifstream fin;
 	fin.open(filename);
 	string line;
 	string ID;
 	string startEdge;
 	string stopEdge;
+	
+	// the while loop checks whether it is the EOF
 	while (fin) {
 		getline(fin, line);
 		size_t foundV = line.find("V,");
 		size_t foundE = line.find("E,");
+
+		// if V is found then store it's ID as a vertex in edmontonGraph
 		if (foundV != string::npos){
 			ID = line.substr(2, line.size()-3);
 			int pos =  ID.find(",");
@@ -152,6 +164,7 @@ Digraph* read_city_graph_undirected(char filename[]) {
 			edmontonGraph.addVertex(k);
 		}			
 
+		// else if E is found, store the given two values as the connection between two vertices
 		else if (foundE != string::npos){
 			startEdge = line.substr(2, line.size()-3);
 			int posStart = startEdge.find(",");
@@ -164,16 +177,15 @@ Digraph* read_city_graph_undirected(char filename[]) {
 			edmontonGraph.addEdge(l, m);
 		}
 	}
+
 	fin.close();
 	cout << count_components(&edmontonGraph) << endl;
 }
 
 
 int main(int argc, char *argv[]) {
-
-
+	// Take the second argument in the terminal as the name of the file
 	read_city_graph_undirected(argv[1]);
-
 
     return 0;
 }
