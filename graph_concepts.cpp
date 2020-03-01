@@ -1,4 +1,8 @@
-// A template for the Graph Concepts Exercise in C++.
+// Name: Pushkar Sabharwal
+// ID: 1588927
+// CMPUT 275 Wi20
+// Weekly Exercise #5: Graph concepts
+
 // Including all the required libraries and files
 #include <iostream>
 using namespace std;
