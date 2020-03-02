@@ -140,7 +140,7 @@ int count_components(Digraph* g) {
 // required function to implement takes file as input and finds the connected components
 Digraph* read_city_graph_undirected(char filename[]) {
 	// initializing an empty instance of Digraph class which stores all the vertices and edges
-	Digraph edmontonGraph;
+	Digraph *edmontonGraph = new Digraph;
 	int k;
 	int l;
 	int m;
@@ -165,7 +165,7 @@ Digraph* read_city_graph_undirected(char filename[]) {
 			int pos =  ID.find(",");
 			ID =  ID.substr(0, pos);
 			k = stoi(ID);
-			edmontonGraph.addVertex(k);
+			edmontonGraph->addVertex(k);
 		}			
 
 		// else if E is found, store the given two values as the connection between two vertices
@@ -178,19 +178,22 @@ Digraph* read_city_graph_undirected(char filename[]) {
 			stopEdge = stopEdge.substr(0, posStop);
 			l = stoi(startEdge);
 			m = stoi(stopEdge);
-			edmontonGraph.addEdge(l, m);
-			edmontonGraph.addEdge(m, l);
+			edmontonGraph->addEdge(l, m);
+			edmontonGraph->addEdge(m, l);
 		}
 	}
 
 	fin.close();
-	cout << count_components(&edmontonGraph) << endl;
+	return edmontonGraph;
 }
 
 
 int main(int argc, char *argv[]) {
 	// Take the second argument in the terminal as the name of the file
-	read_city_graph_undirected(argv[1]);
+	//read_city_graph_undirected(argv[1]);
+	Digraph* edmontonGraph = read_city_graph_undirected(argv[1]);
+	int count = count_components(edmontonGraph);
+	cout << count << endl;
 
     return 0;
 }
