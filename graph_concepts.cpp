@@ -179,7 +179,7 @@ Digraph* read_city_graph_undirected(char filename[]) {
 			l = stoi(startEdge);
 			m = stoi(stopEdge);
 			edmontonGraph.addEdge(l, m);
-			edmontonGraph.addEdge(m,l);
+			edmontonGraph.addEdge(m, l);
 		}
 	}
 
